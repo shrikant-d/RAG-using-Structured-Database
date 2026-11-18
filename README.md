@@ -105,10 +105,45 @@ and `Alt+T` toggles light/dark.
 | tpch_sf001 | How many customers are there in each market segment? |
 | tpch_sf001 | Which nation has the most suppliers? |
 
-The full question sets used in the thesis, with gold SQL, are in
-[`questions/chinook.json`](questions/chinook.json) (25 questions) and
-[`questions/tpch.json`](questions/tpch.json) (the 22 TPC-H queries), and
-[`questions/spider/`](questions/spider/) (299 Spider dev questions over 20 databases; see below).
+### All thesis questions
+
+Every question the thesis evaluates is in **[`questions/sample_questions.txt`](questions/sample_questions.txt)**,
+a plain-text list grouped by database. Each heading names the database to pick in the UI, and
+each line reads `[id] (difficulty) question`, so you can copy a question into the UI. The gold
+SQL for each question is in the JSON file named in the heading.
+
+| Set | UI database | File | Questions | easy / medium / hard / extra |
+|---|---|---|---|---|
+| Chinook (music store, 11 tables) | `chinook` | [`questions/chinook.json`](questions/chinook.json) | 25 | 6 / 8 / 6 / 5 |
+| TPC-H SF 0.01 (the 22 TPC-H queries, 8 tables) | `tpch_sf001` | [`questions/tpch.json`](questions/tpch.json) | 22 | 3 / 7 / 10 / 2 |
+| Spider dev sample, 20 databases | `spider/<name>` | [`questions/spider/<name>.json`](questions/spider/) | 299 | 72 / 129 / 50 / 48 |
+
+The difficulty tiers follow Spider's taxonomy, which depends on the number of joins and the
+nesting of the query. The Spider questions need the Spider download described below. That
+sample is drawn from the Spider 1.0 dev set, stratified by its official hardness levels, with
+seed 2026; `questions/spider/sample_manifest.json` lists the question ids.
+
+Each JSON file has this shape (gold SQL shortened):
+
+```json
+{
+  "db_id": "chinook",
+  "questions": [
+    {"id": 16, "difficulty": "hard",
+     "question": "Which artist earned the most revenue from track sales?",
+     "gold_sql": "SELECT ar.Name FROM InvoiceLine il JOIN Track t ON ... LIMIT 1"}
+  ]
+}
+```
+
+To check an answer by hand, open the **SQL** and **Result** panels in the UI and run the
+`gold_sql` against the same database. Any SQLite client works, for example
+`sqlite3 data/chinook.sqlite`. Matching *result sets*, not matching SQL text, is the thesis'
+correctness criterion.
+
+**Note on the TPC-H questions.** They follow the official TPC-H wording, so they are long. A
+few substitution values were changed so that each query returns a non-empty result at
+SF 0.01.
 
 ---
 

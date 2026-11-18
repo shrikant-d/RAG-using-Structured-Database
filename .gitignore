@@ -1,0 +1,20 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# node (frontend/dist IS committed so no Node is needed to run)
+webui/frontend/node_modules/
+
+# vector index built at runtime by Path A
+.chroma/
+
+.DS_Store
+Thumbs.db

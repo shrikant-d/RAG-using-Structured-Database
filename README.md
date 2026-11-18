@@ -193,3 +193,7 @@ graph from those foreign keys.
   vulnerabilities.
 
 Do not expose this server to a network: it is a local, single-user research tool.
+
+## Licence
+
+Code: [MIT](LICENSE). The databases in `data/` keep the terms of their sources (see *Data sources*).

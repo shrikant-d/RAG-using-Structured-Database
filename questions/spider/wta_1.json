@@ -1,0 +1,116 @@
+{
+ "db_id": "wta_1",
+ "db_url": "sqlite:///data/spider/spider_data/database/wta_1/wta_1.sqlite",
+ "note": "Spider 1.0 dev, stratified sample by official hardness: 300 of 1034 proportional within each level, random.Random(2026). id is the question's index in dev.json. Built by experiments/build_spider_eval.py.",
+ "strict_phrasing": true,
+ "questions": [
+  {
+   "id": 434,
+   "difficulty": "medium",
+   "question": "What are the first names and birth dates of players from the USA?",
+   "gold_sql": "SELECT first_name ,  birth_date FROM players WHERE country_code  =  'USA'"
+  },
+  {
+   "id": 437,
+   "difficulty": "easy",
+   "question": "Find the average rank of winners in all matches.",
+   "gold_sql": "SELECT avg(winner_rank) FROM matches"
+  },
+  {
+   "id": 443,
+   "difficulty": "easy",
+   "question": "Find the number of distinct name of losers.",
+   "gold_sql": "SELECT count(DISTINCT loser_name) FROM matches"
+  },
+  {
+   "id": 444,
+   "difficulty": "easy",
+   "question": "How many different loser names are there?",
+   "gold_sql": "SELECT count(DISTINCT loser_name) FROM matches"
+  },
+  {
+   "id": 447,
+   "difficulty": "hard",
+   "question": "List the names of all winners who played in both 2013 and 2016.",
+   "gold_sql": "SELECT winner_name FROM matches WHERE YEAR  =  2013 INTERSECT SELECT winner_name FROM matches WHERE YEAR  =  2016"
+  },
+  {
+   "id": 451,
+   "difficulty": "extra",
+   "question": "What are the country code and first name of the players who won in both tourney WTA Championships and Australian Open?",
+   "gold_sql": "SELECT T1.country_code ,  T1.first_name FROM players AS T1 JOIN matches AS T2 ON T1.player_id  =  T2.winner_id WHERE T2.tourney_name  =  'WTA Championships' INTERSECT SELECT T1.country_code ,  T1.first_name FROM players AS T1 JOIN matches AS T2 ON T1.player_id  =  T2.winner_id WHERE T2.tourney_name  =  'Australian Open'"
+  },
+  {
+   "id": 460,
+   "difficulty": "hard",
+   "question": "What is the first name and country code of the player with the most tours?",
+   "gold_sql": "SELECT T1.country_code ,  T1.first_name FROM players AS T1 JOIN rankings AS T2 ON T1.player_id  =  T2.player_id ORDER BY T2.tours DESC LIMIT 1"
+  },
+  {
+   "id": 461,
+   "difficulty": "hard",
+   "question": "Find the year that has the most number of matches.",
+   "gold_sql": "SELECT YEAR FROM matches GROUP BY YEAR ORDER BY count(*) DESC LIMIT 1"
+  },
+  {
+   "id": 465,
+   "difficulty": "hard",
+   "question": "Find the name of the winner who has the highest rank points and participated in the Australian Open tourney.",
+   "gold_sql": "SELECT winner_name FROM matches WHERE tourney_name  =  'Australian Open' ORDER BY winner_rank_points DESC LIMIT 1"
+  },
+  {
+   "id": 466,
+   "difficulty": "hard",
+   "question": "What is the name of the winner with the most rank points who participated in the Australian Open tournament?",
+   "gold_sql": "SELECT winner_name FROM matches WHERE tourney_name  =  'Australian Open' ORDER BY winner_rank_points DESC LIMIT 1"
+  },
+  {
+   "id": 470,
+   "difficulty": "medium",
+   "question": "What are the first names of all players, and their average rankings?",
+   "gold_sql": "SELECT avg(ranking) ,  T1.first_name FROM players AS T1 JOIN rankings AS T2 ON T1.player_id  =  T2.player_id GROUP BY T1.first_name"
+  },
+  {
+   "id": 471,
+   "difficulty": "medium",
+   "question": "Find the total ranking points for each player and their first name.",
+   "gold_sql": "SELECT sum(ranking_points) ,  T1.first_name FROM players AS T1 JOIN rankings AS T2 ON T1.player_id  =  T2.player_id GROUP BY T1.first_name"
+  },
+  {
+   "id": 472,
+   "difficulty": "medium",
+   "question": "What are the first names of all players, and their total ranking points?",
+   "gold_sql": "SELECT sum(ranking_points) ,  T1.first_name FROM players AS T1 JOIN rankings AS T2 ON T1.player_id  =  T2.player_id GROUP BY T1.first_name"
+  },
+  {
+   "id": 478,
+   "difficulty": "easy",
+   "question": "What are the codes of countries with more than 50 players?",
+   "gold_sql": "SELECT country_code FROM players GROUP BY country_code HAVING count(*)  >  50"
+  },
+  {
+   "id": 481,
+   "difficulty": "medium",
+   "question": "Find the number of matches happened in each year.",
+   "gold_sql": "SELECT count(*) ,  YEAR FROM matches GROUP BY YEAR"
+  },
+  {
+   "id": 486,
+   "difficulty": "medium",
+   "question": "Find the number of left handed winners who participated in the WTA Championships.",
+   "gold_sql": "SELECT count(DISTINCT winner_name) FROM matches WHERE tourney_name  =  'WTA Championships' AND winner_hand  =  'L'"
+  },
+  {
+   "id": 487,
+   "difficulty": "hard",
+   "question": "Find the first name, country code and birth date of the winner who has the highest rank points in all matches.",
+   "gold_sql": "SELECT T1.first_name ,  T1.country_code ,  T1.birth_date FROM players AS T1 JOIN matches AS T2 ON T1.player_id  =  T2.winner_id ORDER BY T2.winner_rank_points DESC LIMIT 1"
+  },
+  {
+   "id": 490,
+   "difficulty": "medium",
+   "question": "How many players are there for each hand type?",
+   "gold_sql": "SELECT count(*) ,  hand FROM players GROUP BY hand"
+  }
+ ]
+}

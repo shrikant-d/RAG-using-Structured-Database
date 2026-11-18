@@ -1,0 +1,62 @@
+{
+ "db_id": "employee_hire_evaluation",
+ "db_url": "sqlite:///data/spider/spider_data/database/employee_hire_evaluation/employee_hire_evaluation.sqlite",
+ "note": "Spider 1.0 dev, stratified sample by official hardness: 300 of 1034 proportional within each level, random.Random(2026). id is the question's index in dev.json. Built by experiments/build_spider_eval.py.",
+ "strict_phrasing": true,
+ "questions": [
+  {
+   "id": 260,
+   "difficulty": "easy",
+   "question": "Count the number of employees",
+   "gold_sql": "SELECT count(*) FROM employee"
+  },
+  {
+   "id": 269,
+   "difficulty": "medium",
+   "question": "Find the manager name and district of the shop whose number of products is the largest.",
+   "gold_sql": "SELECT manager_name ,  district FROM shop ORDER BY number_products DESC LIMIT 1"
+  },
+  {
+   "id": 272,
+   "difficulty": "medium",
+   "question": "What are the minimum and maximum number of products across all the shops?",
+   "gold_sql": "SELECT min(Number_products) ,  max(Number_products) FROM shop"
+  },
+  {
+   "id": 275,
+   "difficulty": "hard",
+   "question": "Find the names of stores whose number products is more than the average number of products.",
+   "gold_sql": "SELECT name FROM shop WHERE number_products  >  (SELECT avg(number_products) FROM shop)"
+  },
+  {
+   "id": 283,
+   "difficulty": "extra",
+   "question": "What is the name of the shop that is hiring the largest number of employees?",
+   "gold_sql": "SELECT t2.name FROM hiring AS t1 JOIN shop AS t2 ON t1.shop_id  =  t2.shop_id GROUP BY t1.shop_id ORDER BY count(*) DESC LIMIT 1"
+  },
+  {
+   "id": 286,
+   "difficulty": "hard",
+   "question": "Which shops run with no employees? Find the shop names",
+   "gold_sql": "SELECT name FROM shop WHERE shop_id NOT IN (SELECT shop_id FROM hiring)"
+  },
+  {
+   "id": 290,
+   "difficulty": "easy",
+   "question": "Find the total amount of bonus given in all the evaluations.",
+   "gold_sql": "SELECT sum(bonus) FROM evaluation"
+  },
+  {
+   "id": 294,
+   "difficulty": "hard",
+   "question": "Find the districts in which there are both shops selling less than 3000 products and shops selling more than 10000 products.",
+   "gold_sql": "SELECT district FROM shop WHERE Number_products  <  3000 INTERSECT SELECT district FROM shop WHERE Number_products  >  10000"
+  },
+  {
+   "id": 296,
+   "difficulty": "easy",
+   "question": "Count the number of distinct store locations.",
+   "gold_sql": "SELECT count(DISTINCT LOCATION) FROM shop"
+  }
+ ]
+}

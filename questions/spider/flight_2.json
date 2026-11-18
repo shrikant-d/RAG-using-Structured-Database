@@ -1,0 +1,122 @@
+{
+ "db_id": "flight_2",
+ "db_url": "sqlite:///data/spider/spider_data/database/flight_2/flight_2.sqlite",
+ "note": "Spider 1.0 dev, stratified sample by official hardness: 300 of 1034 proportional within each level, random.Random(2026). id is the question's index in dev.json. Built by experiments/build_spider_eval.py.",
+ "strict_phrasing": true,
+ "questions": [
+  {
+   "id": 179,
+   "difficulty": "easy",
+   "question": "Which country does Airline \"JetBlue Airways\" belong to?",
+   "gold_sql": "SELECT Country FROM AIRLINES WHERE Airline  =  \"JetBlue Airways\""
+  },
+  {
+   "id": 181,
+   "difficulty": "easy",
+   "question": "What is the abbreviation of Airline \"JetBlue Airways\"?",
+   "gold_sql": "SELECT Abbreviation FROM AIRLINES WHERE Airline  =  \"JetBlue Airways\""
+  },
+  {
+   "id": 184,
+   "difficulty": "medium",
+   "question": "What are the airline names and abbreviations for airlines in the USA?",
+   "gold_sql": "SELECT Airline ,  Abbreviation FROM AIRLINES WHERE Country  =  \"USA\""
+  },
+  {
+   "id": 187,
+   "difficulty": "easy",
+   "question": "How many airlines do we have?",
+   "gold_sql": "SELECT count(*) FROM AIRLINES"
+  },
+  {
+   "id": 193,
+   "difficulty": "easy",
+   "question": "Which airline has abbreviation 'UAL'?",
+   "gold_sql": "SELECT Airline FROM AIRLINES WHERE Abbreviation  =  \"UAL\""
+  },
+  {
+   "id": 218,
+   "difficulty": "medium",
+   "question": "Return the number of United Airlines flights leaving from AHD Airport.",
+   "gold_sql": "SELECT count(*) FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T2.Airline  =  T1.uid WHERE T1.Airline  =  \"United Airlines\" AND T2.SourceAirport  =  \"AHD\""
+  },
+  {
+   "id": 220,
+   "difficulty": "hard",
+   "question": "Count the number of United Airlines flights that arrive in Aberdeen.",
+   "gold_sql": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode JOIN AIRLINES AS T3 ON T3.uid  =  T1.Airline WHERE T2.City  =  \"Aberdeen\" AND T3.Airline  =  \"United Airlines\""
+  },
+  {
+   "id": 222,
+   "difficulty": "extra",
+   "question": "Which city has the most frequent destination airport?",
+   "gold_sql": "SELECT T1.City FROM AIRPORTS AS T1 JOIN FLIGHTS AS T2 ON T1.AirportCode  =  T2.DestAirport GROUP BY T1.City ORDER BY count(*) DESC LIMIT 1"
+  },
+  {
+   "id": 225,
+   "difficulty": "extra",
+   "question": "What is the code of airport that has the highest number of flights?",
+   "gold_sql": "SELECT T1.AirportCode FROM AIRPORTS AS T1 JOIN FLIGHTS AS T2 ON T1.AirportCode  =  T2.DestAirport OR T1.AirportCode  =  T2.SourceAirport GROUP BY T1.AirportCode ORDER BY count(*) DESC LIMIT 1"
+  },
+  {
+   "id": 226,
+   "difficulty": "extra",
+   "question": "What is the airport code of the airport with the most flights?",
+   "gold_sql": "SELECT T1.AirportCode FROM AIRPORTS AS T1 JOIN FLIGHTS AS T2 ON T1.AirportCode  =  T2.DestAirport OR T1.AirportCode  =  T2.SourceAirport GROUP BY T1.AirportCode ORDER BY count(*) DESC LIMIT 1"
+  },
+  {
+   "id": 228,
+   "difficulty": "extra",
+   "question": "Give the code of the airport with the least flights.",
+   "gold_sql": "SELECT T1.AirportCode FROM AIRPORTS AS T1 JOIN FLIGHTS AS T2 ON T1.AirportCode  =  T2.DestAirport OR T1.AirportCode  =  T2.SourceAirport GROUP BY T1.AirportCode ORDER BY count(*) LIMIT 1"
+  },
+  {
+   "id": 229,
+   "difficulty": "extra",
+   "question": "Which airline has most number of flights?",
+   "gold_sql": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline GROUP BY T1.Airline ORDER BY count(*) DESC LIMIT 1"
+  },
+  {
+   "id": 240,
+   "difficulty": "extra",
+   "question": "Which airlines have departures from CVO but not from APG airports?",
+   "gold_sql": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.SourceAirport  =  \"CVO\" EXCEPT SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline WHERE T2.SourceAirport  =  \"APG\""
+  },
+  {
+   "id": 242,
+   "difficulty": "medium",
+   "question": "Which airlines have at least 10 flights?",
+   "gold_sql": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline GROUP BY T1.Airline HAVING count(*)  >  10"
+  },
+  {
+   "id": 244,
+   "difficulty": "medium",
+   "question": "Which airlines have less than 200 flights?",
+   "gold_sql": "SELECT T1.Airline FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline GROUP BY T1.Airline HAVING count(*)  <  200"
+  },
+  {
+   "id": 245,
+   "difficulty": "medium",
+   "question": "What are flight numbers of Airline \"United Airlines\"?",
+   "gold_sql": "SELECT T1.FlightNo FROM FLIGHTS AS T1 JOIN AIRLINES AS T2 ON T2.uid  =  T1.Airline WHERE T2.Airline  =  \"United Airlines\""
+  },
+  {
+   "id": 246,
+   "difficulty": "medium",
+   "question": "Which flight numbers correspond to United Airlines flights?",
+   "gold_sql": "SELECT T1.FlightNo FROM FLIGHTS AS T1 JOIN AIRLINES AS T2 ON T2.uid  =  T1.Airline WHERE T2.Airline  =  \"United Airlines\""
+  },
+  {
+   "id": 255,
+   "difficulty": "hard",
+   "question": "Find the number of flights landing in the city of Aberdeen or Abilene.",
+   "gold_sql": "SELECT count(*) FROM Flights AS T1 JOIN Airports AS T2 ON T1.DestAirport  =  T2.AirportCode WHERE T2.city  =  \"Aberdeen\" OR T2.city  =  \"Abilene\""
+  },
+  {
+   "id": 256,
+   "difficulty": "hard",
+   "question": "How many flights land in Aberdeen or Abilene?",
+   "gold_sql": "SELECT count(*) FROM Flights AS T1 JOIN Airports AS T2 ON T1.DestAirport  =  T2.AirportCode WHERE T2.city  =  \"Aberdeen\" OR T2.city  =  \"Abilene\""
+  }
+ ]
+}

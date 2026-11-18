@@ -1,0 +1,68 @@
+{
+ "db_id": "singer",
+ "db_url": "sqlite:///data/spider/spider_data/database/singer/singer.sqlite",
+ "note": "Spider 1.0 dev, stratified sample by official hardness: 300 of 1034 proportional within each level, random.Random(2026). id is the question's index in dev.json. Built by experiments/build_spider_eval.py.",
+ "strict_phrasing": true,
+ "questions": [
+  {
+   "id": 1001,
+   "difficulty": "easy",
+   "question": "What is the count of singers?",
+   "gold_sql": "SELECT count(*) FROM singer"
+  },
+  {
+   "id": 1002,
+   "difficulty": "easy",
+   "question": "List the name of singers in ascending order of net worth.",
+   "gold_sql": "SELECT Name FROM singer ORDER BY Net_Worth_Millions ASC"
+  },
+  {
+   "id": 1003,
+   "difficulty": "easy",
+   "question": "What are the names of singers ordered by ascending net worth?",
+   "gold_sql": "SELECT Name FROM singer ORDER BY Net_Worth_Millions ASC"
+  },
+  {
+   "id": 1009,
+   "difficulty": "medium",
+   "question": "What are the names of the singers whose birth years are either 1948 or 1949?",
+   "gold_sql": "SELECT Name FROM singer WHERE Birth_Year  =  1948 OR Birth_Year  =  1949"
+  },
+  {
+   "id": 1012,
+   "difficulty": "medium",
+   "question": "Show different citizenship of singers and the number of singers of each citizenship.",
+   "gold_sql": "SELECT Citizenship ,  COUNT(*) FROM singer GROUP BY Citizenship"
+  },
+  {
+   "id": 1017,
+   "difficulty": "medium",
+   "question": "For each citizenship, what is the maximum net worth?",
+   "gold_sql": "SELECT Citizenship ,  max(Net_Worth_Millions) FROM singer GROUP BY Citizenship"
+  },
+  {
+   "id": 1022,
+   "difficulty": "medium",
+   "question": "Show the names of singers that have more than one song.",
+   "gold_sql": "SELECT T1.Name FROM singer AS T1 JOIN song AS T2 ON T1.Singer_ID  =  T2.Singer_ID GROUP BY T1.Name HAVING COUNT(*)  >  1"
+  },
+  {
+   "id": 1024,
+   "difficulty": "medium",
+   "question": "Show the names of singers and the total sales of their songs.",
+   "gold_sql": "SELECT T1.Name ,  sum(T2.Sales) FROM singer AS T1 JOIN song AS T2 ON T1.Singer_ID  =  T2.Singer_ID GROUP BY T1.Name"
+  },
+  {
+   "id": 1026,
+   "difficulty": "hard",
+   "question": "List the name of singers that do not have any song.",
+   "gold_sql": "SELECT Name FROM singer WHERE Singer_ID NOT IN (SELECT Singer_ID FROM song)"
+  },
+  {
+   "id": 1029,
+   "difficulty": "hard",
+   "question": "What are the citizenships that are shared by singers with a birth year before 1945 and after 1955?",
+   "gold_sql": "SELECT Citizenship FROM singer WHERE Birth_Year  <  1945 INTERSECT SELECT Citizenship FROM singer WHERE Birth_Year  >  1955"
+  }
+ ]
+}

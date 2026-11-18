@@ -1,0 +1,50 @@
+{
+ "db_id": "battle_death",
+ "db_url": "sqlite:///data/spider/spider_data/database/battle_death/battle_death.sqlite",
+ "note": "Spider 1.0 dev, stratified sample by official hardness: 300 of 1034 proportional within each level, random.Random(2026). id is the question's index in dev.json. Built by experiments/build_spider_eval.py.",
+ "strict_phrasing": true,
+ "questions": [
+  {
+   "id": 493,
+   "difficulty": "medium",
+   "question": "List the name, date and result of each battle.",
+   "gold_sql": "SELECT name ,  date FROM battle"
+  },
+  {
+   "id": 496,
+   "difficulty": "medium",
+   "question": "What are the death and injury situations caused by the ship with tonnage 't'?",
+   "gold_sql": "SELECT T1.killed ,  T1.injured FROM death AS T1 JOIN ship AS t2 ON T1.caused_by_ship_id  =  T2.id WHERE T2.tonnage  =  't'"
+  },
+  {
+   "id": 497,
+   "difficulty": "medium",
+   "question": "What are the name and results of the battles when the bulgarian commander is not 'Boril'",
+   "gold_sql": "SELECT name ,  RESULT FROM battle WHERE bulgarian_commander != 'Boril'"
+  },
+  {
+   "id": 499,
+   "difficulty": "hard",
+   "question": "What are the ids and names of the battles that led to more than 10 people killed in total.",
+   "gold_sql": "SELECT T1.id ,  T1.name FROM battle AS T1 JOIN ship AS T2 ON T1.id  =  T2.lost_in_battle JOIN death AS T3 ON T2.id  =  T3.caused_by_ship_id GROUP BY T1.id HAVING sum(T3.killed)  >  10"
+  },
+  {
+   "id": 501,
+   "difficulty": "medium",
+   "question": "What are the distinct battle names which are between bulgarian commander 'Kaloyan' and latin commander 'Baldwin I'?",
+   "gold_sql": "SELECT name FROM battle WHERE bulgarian_commander  =  'Kaloyan' AND latin_commander  =  'Baldwin I'"
+  },
+  {
+   "id": 502,
+   "difficulty": "easy",
+   "question": "How many different results are there for the battles?",
+   "gold_sql": "SELECT count(DISTINCT RESULT) FROM battle"
+  },
+  {
+   "id": 503,
+   "difficulty": "extra",
+   "question": "How many battles did not lose any ship with tonnage '225'?",
+   "gold_sql": "SELECT count(*) FROM battle WHERE id NOT IN ( SELECT lost_in_battle FROM ship WHERE tonnage  =  '225' );"
+  }
+ ]
+}

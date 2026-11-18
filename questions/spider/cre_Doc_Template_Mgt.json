@@ -1,0 +1,116 @@
+{
+ "db_id": "cre_Doc_Template_Mgt",
+ "db_url": "sqlite:///data/spider/spider_data/database/cre_Doc_Template_Mgt/cre_Doc_Template_Mgt.sqlite",
+ "note": "Spider 1.0 dev, stratified sample by official hardness: 300 of 1034 proportional within each level, random.Random(2026). id is the question's index in dev.json. Built by experiments/build_spider_eval.py.",
+ "strict_phrasing": true,
+ "questions": [
+  {
+   "id": 303,
+   "difficulty": "medium",
+   "question": "What is the document id, template id and description for document named \"Robbin CV\"?",
+   "gold_sql": "SELECT document_id ,  template_id ,  Document_Description FROM Documents WHERE document_name  =  \"Robbin CV\""
+  },
+  {
+   "id": 305,
+   "difficulty": "easy",
+   "question": "How many different templates do all document use?",
+   "gold_sql": "SELECT count(DISTINCT template_id) FROM Documents"
+  },
+  {
+   "id": 307,
+   "difficulty": "medium",
+   "question": "How many documents are using the template with type code 'PPT'?",
+   "gold_sql": "SELECT count(*) FROM Documents AS T1 JOIN Templates AS T2 ON T1.Template_ID  =  T2.Template_ID WHERE T2.Template_Type_Code  =  'PPT'"
+  },
+  {
+   "id": 319,
+   "difficulty": "medium",
+   "question": "Show template ids, version numbers, and template type codes for all templates.",
+   "gold_sql": "SELECT template_id ,  version_number ,  template_type_code FROM Templates"
+  },
+  {
+   "id": 320,
+   "difficulty": "medium",
+   "question": "What are the ids, version numbers, and type codes for each template?",
+   "gold_sql": "SELECT template_id ,  version_number ,  template_type_code FROM Templates"
+  },
+  {
+   "id": 326,
+   "difficulty": "easy",
+   "question": "Count the number of templates of the type CV.",
+   "gold_sql": "SELECT count(*) FROM Templates WHERE template_type_code  =  \"CV\""
+  },
+  {
+   "id": 327,
+   "difficulty": "medium",
+   "question": "What is the version number and template type code for the template with version number later than 5?",
+   "gold_sql": "SELECT version_number ,  template_type_code FROM Templates WHERE version_number  >  5"
+  },
+  {
+   "id": 328,
+   "difficulty": "medium",
+   "question": "Return the version numbers and template type codes of templates with a version number greater than 5.",
+   "gold_sql": "SELECT version_number ,  template_type_code FROM Templates WHERE version_number  >  5"
+  },
+  {
+   "id": 333,
+   "difficulty": "easy",
+   "question": "Show all template type codes with less than three templates.",
+   "gold_sql": "SELECT template_type_code FROM Templates GROUP BY template_type_code HAVING count(*)  <  3"
+  },
+  {
+   "id": 347,
+   "difficulty": "medium",
+   "question": "Show all template type codes and descriptions.",
+   "gold_sql": "SELECT template_type_code ,  template_type_description FROM Ref_template_types"
+  },
+  {
+   "id": 352,
+   "difficulty": "easy",
+   "question": "Return the type code of the template type with the description \"Book\".",
+   "gold_sql": "SELECT template_type_code FROM Ref_template_types WHERE template_type_description  =  \"Book\""
+  },
+  {
+   "id": 353,
+   "difficulty": "medium",
+   "question": "What are the distinct template type descriptions for the templates ever used by any document?",
+   "gold_sql": "SELECT DISTINCT T1.template_type_description FROM Ref_template_types AS T1 JOIN Templates AS T2 ON T1.template_type_code  = T2.template_type_code JOIN Documents AS T3 ON T2.Template_ID  =  T3.template_ID"
+  },
+  {
+   "id": 357,
+   "difficulty": "easy",
+   "question": "How many paragraphs in total?",
+   "gold_sql": "SELECT count(*) FROM Paragraphs"
+  },
+  {
+   "id": 358,
+   "difficulty": "easy",
+   "question": "Count the number of paragraphs.",
+   "gold_sql": "SELECT count(*) FROM Paragraphs"
+  },
+  {
+   "id": 362,
+   "difficulty": "medium",
+   "question": "What are the details for the paragraph that includes the text 'Korea ' ?",
+   "gold_sql": "select other_details from paragraphs where paragraph_text like 'korea'"
+  },
+  {
+   "id": 365,
+   "difficulty": "medium",
+   "question": "Show all paragraph texts for the document \"Customer reviews\".",
+   "gold_sql": "SELECT T1.paragraph_text FROM Paragraphs AS T1 JOIN Documents AS T2 ON T1.document_id  =  T2.document_id WHERE T2.document_name  =  \"Customer reviews\""
+  },
+  {
+   "id": 367,
+   "difficulty": "medium",
+   "question": "Show all document ids and the number of paragraphs in each document. Order by document id.",
+   "gold_sql": "SELECT document_id ,  count(*) FROM Paragraphs GROUP BY document_id ORDER BY document_id"
+  },
+  {
+   "id": 375,
+   "difficulty": "hard",
+   "question": "What is the document id with least number of paragraphs?",
+   "gold_sql": "SELECT document_id FROM Paragraphs GROUP BY document_id ORDER BY count(*) ASC LIMIT 1"
+  }
+ ]
+}

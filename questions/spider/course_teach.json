@@ -1,0 +1,32 @@
+{
+ "db_id": "course_teach",
+ "db_url": "sqlite:///data/spider/spider_data/database/course_teach/course_teach.sqlite",
+ "note": "Spider 1.0 dev, stratified sample by official hardness: 300 of 1034 proportional within each level, random.Random(2026). id is the question's index in dev.json. Built by experiments/build_spider_eval.py.",
+ "strict_phrasing": true,
+ "questions": [
+  {
+   "id": 382,
+   "difficulty": "easy",
+   "question": "What is the total count of teachers?",
+   "gold_sql": "SELECT count(*) FROM teacher"
+  },
+  {
+   "id": 384,
+   "difficulty": "easy",
+   "question": "What are the names of the teachers ordered by ascending age?",
+   "gold_sql": "SELECT Name FROM teacher ORDER BY Age ASC"
+  },
+  {
+   "id": 388,
+   "difficulty": "easy",
+   "question": "What are the names of the teachers whose hometown is not `` Little Lever Urban District '' ?",
+   "gold_sql": "select name from teacher where hometown != \"little lever urban district\""
+  },
+  {
+   "id": 398,
+   "difficulty": "easy",
+   "question": "What are the towns from which at least two teachers come from?",
+   "gold_sql": "SELECT Hometown FROM teacher GROUP BY Hometown HAVING COUNT(*)  >=  2"
+  }
+ ]
+}

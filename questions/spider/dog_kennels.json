@@ -1,0 +1,134 @@
+{
+ "db_id": "dog_kennels",
+ "db_url": "sqlite:///data/spider/spider_data/database/dog_kennels/dog_kennels.sqlite",
+ "note": "Spider 1.0 dev, stratified sample by official hardness: 300 of 1034 proportional within each level, random.Random(2026). id is the question's index in dev.json. Built by experiments/build_spider_eval.py.",
+ "strict_phrasing": true,
+ "questions": [
+  {
+   "id": 918,
+   "difficulty": "hard",
+   "question": "Which states have both owners and professionals living there?",
+   "gold_sql": "SELECT state FROM Owners INTERSECT SELECT state FROM Professionals"
+  },
+  {
+   "id": 920,
+   "difficulty": "hard",
+   "question": "What is the average age of the dogs who have gone through any treatments?",
+   "gold_sql": "SELECT avg(age) FROM Dogs WHERE dog_id IN ( SELECT dog_id FROM Treatments )"
+  },
+  {
+   "id": 932,
+   "difficulty": "medium",
+   "question": "Which professionals have done at least two treatments? List the professional's id, role, and first name.",
+   "gold_sql": "SELECT T1.professional_id ,  T1.role_code ,  T1.first_name FROM Professionals AS T1 JOIN Treatments AS T2 ON T1.professional_id  =  T2.professional_id GROUP BY T1.professional_id HAVING count(*)  >=  2"
+  },
+  {
+   "id": 934,
+   "difficulty": "extra",
+   "question": "What is the name of the breed with the most dogs?",
+   "gold_sql": "SELECT T1.breed_name FROM Breeds AS T1 JOIN Dogs AS T2 ON T1.breed_code  =  T2.breed_code GROUP BY T1.breed_name ORDER BY count(*) DESC LIMIT 1"
+  },
+  {
+   "id": 936,
+   "difficulty": "extra",
+   "question": "Which owner has paid for the most treatments on his or her dogs? List the owner id and last name.",
+   "gold_sql": "SELECT T1.owner_id ,  T1.last_name FROM Owners AS T1 JOIN Dogs AS T2 ON T1.owner_id  =  T2.owner_id JOIN Treatments AS T3 ON T2.dog_id  =  T3.dog_id GROUP BY T1.owner_id ORDER BY count(*) DESC LIMIT 1"
+  },
+  {
+   "id": 939,
+   "difficulty": "extra",
+   "question": "Give me the description of the treatment type whose total cost is the lowest.",
+   "gold_sql": "SELECT T1.treatment_type_description FROM Treatment_types AS T1 JOIN Treatments AS T2 ON T1.treatment_type_code  =  T2.treatment_type_code GROUP BY T1.treatment_type_code ORDER BY sum(cost_of_treatment) ASC LIMIT 1"
+  },
+  {
+   "id": 942,
+   "difficulty": "medium",
+   "question": "Which professionals have done at least two types of treatments? List the professional id and cell phone.",
+   "gold_sql": "SELECT T1.professional_id ,  T1.cell_number FROM Professionals AS T1 JOIN Treatments AS T2 ON T1.professional_id  =  T2.professional_id GROUP BY T1.professional_id HAVING count(*)  >=  2"
+  },
+  {
+   "id": 949,
+   "difficulty": "medium",
+   "question": "What are the cost and treatment type description of each treatment?",
+   "gold_sql": "SELECT T1.cost_of_treatment ,  T2.treatment_type_description FROM Treatments AS T1 JOIN treatment_types AS T2 ON T1.treatment_type_code  =  T2.treatment_type_code"
+  },
+  {
+   "id": 952,
+   "difficulty": "medium",
+   "question": "List pairs of the owner's first name and the dogs's name.",
+   "gold_sql": "SELECT T1.first_name ,  T2.name FROM Owners AS T1 JOIN Dogs AS T2 ON T1.owner_id  =  T2.owner_id"
+  },
+  {
+   "id": 961,
+   "difficulty": "extra",
+   "question": "Who owns the youngest dog? Give me his or her last name.",
+   "gold_sql": "SELECT T1.last_name FROM Owners AS T1 JOIN Dogs AS T2 ON T1.owner_id  =  T2.owner_id WHERE T2.age  =  ( SELECT max(age) FROM Dogs )"
+  },
+  {
+   "id": 969,
+   "difficulty": "easy",
+   "question": "Find the number of professionals who have ever treated dogs.",
+   "gold_sql": "SELECT count(DISTINCT professional_id) FROM Treatments"
+  },
+  {
+   "id": 970,
+   "difficulty": "medium",
+   "question": "Which professionals live in a city containing the substring 'West'? List his or her role, street, city and state.",
+   "gold_sql": "SELECT role_code ,  street ,  city ,  state FROM professionals WHERE city LIKE '%West%'"
+  },
+  {
+   "id": 971,
+   "difficulty": "medium",
+   "question": "Find the role, street, city and state of the professionals living in a city that contains the substring 'West'.",
+   "gold_sql": "SELECT role_code ,  street ,  city ,  state FROM professionals WHERE city LIKE '%West%'"
+  },
+  {
+   "id": 972,
+   "difficulty": "medium",
+   "question": "Which owners live in the state whose name contains the substring 'North'? List his first name, last name and email.",
+   "gold_sql": "SELECT first_name ,  last_name ,  email_address FROM Owners WHERE state LIKE '%North%'"
+  },
+  {
+   "id": 982,
+   "difficulty": "extra",
+   "question": "How many professionals did not operate any treatment on dogs?",
+   "gold_sql": "SELECT count(*) FROM Professionals WHERE professional_id NOT IN ( SELECT professional_id FROM Treatments )"
+  },
+  {
+   "id": 983,
+   "difficulty": "extra",
+   "question": "Find the number of professionals who have not treated any dogs.",
+   "gold_sql": "SELECT count(*) FROM Professionals WHERE professional_id NOT IN ( SELECT professional_id FROM Treatments )"
+  },
+  {
+   "id": 985,
+   "difficulty": "medium",
+   "question": "What are the dog name, age and weight of the dogs that were abandoned? Note that 1 stands for yes, and 0 stands for no in the tables.",
+   "gold_sql": "SELECT name ,  age ,  weight FROM Dogs WHERE abandoned_yn  =  1"
+  },
+  {
+   "id": 988,
+   "difficulty": "easy",
+   "question": "What is the age of the oldest dog?",
+   "gold_sql": "SELECT max(age) FROM Dogs"
+  },
+  {
+   "id": 990,
+   "difficulty": "medium",
+   "question": "How much does each charge type costs? List both charge type and amount.",
+   "gold_sql": "SELECT charge_type ,  charge_amount FROM Charges"
+  },
+  {
+   "id": 997,
+   "difficulty": "medium",
+   "question": "Find the distinct breed type and size type combinations for dogs.",
+   "gold_sql": "SELECT DISTINCT breed_code ,  size_code FROM dogs"
+  },
+  {
+   "id": 998,
+   "difficulty": "medium",
+   "question": "List the first name of all the professionals along with the description of the treatment they have done.",
+   "gold_sql": "SELECT DISTINCT T1.first_name ,  T3.treatment_type_description FROM professionals AS T1 JOIN Treatments AS T2 ON T1.professional_id  =  T2.professional_id JOIN Treatment_types AS T3 ON T2.treatment_type_code  =  T3.treatment_type_code"
+  }
+ ]
+}

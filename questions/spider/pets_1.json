@@ -1,0 +1,68 @@
+{
+ "db_id": "pets_1",
+ "db_url": "sqlite:///data/spider/spider_data/database/pets_1/pets_1.sqlite",
+ "note": "Spider 1.0 dev, stratified sample by official hardness: 300 of 1034 proportional within each level, random.Random(2026). id is the question's index in dev.json. Built by experiments/build_spider_eval.py.",
+ "strict_phrasing": true,
+ "questions": [
+  {
+   "id": 48,
+   "difficulty": "medium",
+   "question": "How much does the youngest dog weigh?",
+   "gold_sql": "SELECT weight FROM pets ORDER BY pet_age LIMIT 1"
+  },
+  {
+   "id": 53,
+   "difficulty": "hard",
+   "question": "Find the number of dog pets that are raised by female students (with sex F).",
+   "gold_sql": "SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T2.petid  =  T3.petid WHERE T1.sex  =  'F' AND T3.pettype  =  'dog'"
+  },
+  {
+   "id": 55,
+   "difficulty": "easy",
+   "question": "Find the number of distinct type of pets.",
+   "gold_sql": "SELECT count(DISTINCT pettype) FROM pets"
+  },
+  {
+   "id": 58,
+   "difficulty": "extra",
+   "question": "What are the first names of every student who has a cat or dog as a pet?",
+   "gold_sql": "SELECT DISTINCT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat' OR T3.pettype  =  'dog'"
+  },
+  {
+   "id": 66,
+   "difficulty": "extra",
+   "question": "What is the first name of every student who has a dog but does not have a cat?",
+   "gold_sql": "SELECT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'dog' AND T1.stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')"
+  },
+  {
+   "id": 69,
+   "difficulty": "medium",
+   "question": "Find the id and weight of all pets whose age is older than 1.",
+   "gold_sql": "SELECT petid ,  weight FROM pets WHERE pet_age  >  1"
+  },
+  {
+   "id": 79,
+   "difficulty": "medium",
+   "question": "Find the number of pets for each student who has any pet and student id.",
+   "gold_sql": "SELECT count(*) ,  T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid"
+  },
+  {
+   "id": 83,
+   "difficulty": "hard",
+   "question": "Find the last name of the student who has a cat that is age 3.",
+   "gold_sql": "SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pet_age  =  3 AND T3.pettype  =  'cat'"
+  },
+  {
+   "id": 84,
+   "difficulty": "hard",
+   "question": "What is the last name of the student who has a cat that is 3 years old?",
+   "gold_sql": "SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pet_age  =  3 AND T3.pettype  =  'cat'"
+  },
+  {
+   "id": 85,
+   "difficulty": "extra",
+   "question": "Find the average age of students who do not have any pet .",
+   "gold_sql": "select avg(age) from student where stuid not in (select stuid from has_pet)"
+  }
+ ]
+}

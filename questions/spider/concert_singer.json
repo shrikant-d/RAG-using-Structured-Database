@@ -1,0 +1,92 @@
+{
+ "db_id": "concert_singer",
+ "db_url": "sqlite:///data/spider/spider_data/database/concert_singer/concert_singer.sqlite",
+ "note": "Spider 1.0 dev, stratified sample by official hardness: 300 of 1034 proportional within each level, random.Random(2026). id is the question's index in dev.json. Built by experiments/build_spider_eval.py.",
+ "strict_phrasing": true,
+ "questions": [
+  {
+   "id": 0,
+   "difficulty": "easy",
+   "question": "How many singers do we have?",
+   "gold_sql": "SELECT count(*) FROM singer"
+  },
+  {
+   "id": 2,
+   "difficulty": "medium",
+   "question": "Show name, country, age for all singers ordered by age from the oldest to the youngest.",
+   "gold_sql": "SELECT name ,  country ,  age FROM singer ORDER BY age DESC"
+  },
+  {
+   "id": 4,
+   "difficulty": "medium",
+   "question": "What is the average, minimum, and maximum age of all singers from France?",
+   "gold_sql": "SELECT avg(age) ,  min(age) ,  max(age) FROM singer WHERE country  =  'France'"
+  },
+  {
+   "id": 6,
+   "difficulty": "medium",
+   "question": "Show the name and the release year of the song by the youngest singer.",
+   "gold_sql": "SELECT song_name ,  song_release_year FROM singer ORDER BY age LIMIT 1"
+  },
+  {
+   "id": 8,
+   "difficulty": "easy",
+   "question": "What are all distinct countries where singers above age 20 are from?",
+   "gold_sql": "SELECT DISTINCT country FROM singer WHERE age  >  20"
+  },
+  {
+   "id": 11,
+   "difficulty": "medium",
+   "question": "How many singers are from each country?",
+   "gold_sql": "SELECT country ,  count(*) FROM singer GROUP BY country"
+  },
+  {
+   "id": 18,
+   "difficulty": "medium",
+   "question": "What is the name and capacity for the stadium with highest average attendance?",
+   "gold_sql": "SELECT name ,  capacity FROM stadium ORDER BY average DESC LIMIT 1"
+  },
+  {
+   "id": 22,
+   "difficulty": "medium",
+   "question": "Show the stadium name and the number of concerts in each stadium.",
+   "gold_sql": "SELECT T2.name ,  count(*) FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id GROUP BY T1.stadium_id"
+  },
+  {
+   "id": 23,
+   "difficulty": "medium",
+   "question": "For each stadium, how many concerts play there?",
+   "gold_sql": "SELECT T2.name ,  count(*) FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id GROUP BY T1.stadium_id"
+  },
+  {
+   "id": 24,
+   "difficulty": "extra",
+   "question": "Show the stadium name and capacity with most number of concerts in year 2014 or after.",
+   "gold_sql": "SELECT T2.name ,  T2.capacity FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.year  >=  2014 GROUP BY T2.stadium_id ORDER BY count(*) DESC LIMIT 1"
+  },
+  {
+   "id": 27,
+   "difficulty": "hard",
+   "question": "What is the year that had the most concerts?",
+   "gold_sql": "SELECT YEAR FROM concert GROUP BY YEAR ORDER BY count(*) DESC LIMIT 1"
+  },
+  {
+   "id": 28,
+   "difficulty": "hard",
+   "question": "Show the stadium names without any concert.",
+   "gold_sql": "SELECT name FROM stadium WHERE stadium_id NOT IN (SELECT stadium_id FROM concert)"
+  },
+  {
+   "id": 30,
+   "difficulty": "hard",
+   "question": "Show countries where a singer above age 40 and a singer below 30 are from.",
+   "gold_sql": "SELECT country FROM singer WHERE age  >  40 INTERSECT SELECT country FROM singer WHERE age  <  30"
+  },
+  {
+   "id": 39,
+   "difficulty": "medium",
+   "question": "what is the name and nation of the singer who have a song having 'Hey' in its name?",
+   "gold_sql": "SELECT name ,  country FROM singer WHERE song_name LIKE '%Hey%'"
+  }
+ ]
+}

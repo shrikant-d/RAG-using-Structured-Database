@@ -1,0 +1,266 @@
+{
+ "db_id": "world_1",
+ "db_url": "sqlite:///data/spider/spider_data/database/world_1/world_1.sqlite",
+ "note": "Spider 1.0 dev, stratified sample by official hardness: 300 of 1034 proportional within each level, random.Random(2026). id is the question's index in dev.json. Built by experiments/build_spider_eval.py.",
+ "strict_phrasing": true,
+ "questions": [
+  {
+   "id": 704,
+   "difficulty": "easy",
+   "question": "How many countries have a republic as their form of government?",
+   "gold_sql": "SELECT count(*) FROM country WHERE GovernmentForm  =  \"Republic\""
+  },
+  {
+   "id": 706,
+   "difficulty": "easy",
+   "question": "What is the total surface area of the countries in the Caribbean region?",
+   "gold_sql": "SELECT sum(SurfaceArea) FROM country WHERE Region  =  \"Caribbean\""
+  },
+  {
+   "id": 708,
+   "difficulty": "easy",
+   "question": "Which continent is Anguilla in?",
+   "gold_sql": "SELECT Continent FROM country WHERE Name  =  \"Anguilla\""
+  },
+  {
+   "id": 711,
+   "difficulty": "medium",
+   "question": "What region is Kabul in?",
+   "gold_sql": "SELECT Region FROM country AS T1 JOIN city AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Name  =  \"Kabul\""
+  },
+  {
+   "id": 715,
+   "difficulty": "medium",
+   "question": "Give me Brazil’s population and life expectancies.",
+   "gold_sql": "SELECT Population ,  LifeExpectancy FROM country WHERE Name  =  \"Brazil\""
+  },
+  {
+   "id": 719,
+   "difficulty": "easy",
+   "question": "How long is the people’s average life expectancy in Central Africa?",
+   "gold_sql": "SELECT avg(LifeExpectancy) FROM country WHERE Region  =  \"Central Africa\""
+  },
+  {
+   "id": 720,
+   "difficulty": "hard",
+   "question": "What is the name of country that has the shortest life expectancy in Asia?",
+   "gold_sql": "SELECT Name FROM country WHERE Continent  =  \"Asia\" ORDER BY LifeExpectancy LIMIT 1"
+  },
+  {
+   "id": 724,
+   "difficulty": "medium",
+   "question": "What is the average life expectancy in African countries that are republics?",
+   "gold_sql": "SELECT avg(LifeExpectancy) FROM country WHERE Continent  =  \"Africa\" AND GovernmentForm  =  \"Republic\""
+  },
+  {
+   "id": 729,
+   "difficulty": "easy",
+   "question": "What is the total population of Gelderland district?",
+   "gold_sql": "SELECT sum(Population) FROM city WHERE District  =  \"Gelderland\""
+  },
+  {
+   "id": 731,
+   "difficulty": "medium",
+   "question": "Give the mean GNP and total population of nations which are considered US territory.",
+   "gold_sql": "SELECT avg(GNP) ,  sum(population) FROM country WHERE GovernmentForm  =  \"US Territory\""
+  },
+  {
+   "id": 735,
+   "difficulty": "easy",
+   "question": "How many different forms of governments are there in Africa?",
+   "gold_sql": "SELECT count(DISTINCT GovernmentForm) FROM country WHERE Continent  =  \"Africa\""
+  },
+  {
+   "id": 736,
+   "difficulty": "medium",
+   "question": "What is the total number of languages used in Aruba?",
+   "gold_sql": "SELECT COUNT(T2.Language) FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T1.Name  =  \"Aruba\""
+  },
+  {
+   "id": 738,
+   "difficulty": "medium",
+   "question": "How many official languages does Afghanistan have?",
+   "gold_sql": "SELECT COUNT(*) FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T1.Name  =  \"Afghanistan\" AND IsOfficial  =  \"T\""
+  },
+  {
+   "id": 742,
+   "difficulty": "extra",
+   "question": "Which continent has the most diverse languages?",
+   "gold_sql": "SELECT T1.Continent FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode GROUP BY T1.Continent ORDER BY COUNT(*) DESC LIMIT 1"
+  },
+  {
+   "id": 744,
+   "difficulty": "easy",
+   "question": "How many countries speak both English and Dutch?",
+   "gold_sql": "SELECT COUNT(*) FROM (SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\" INTERSECT SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"Dutch\")"
+  },
+  {
+   "id": 745,
+   "difficulty": "easy",
+   "question": "What is the number of nations that use English and Dutch?",
+   "gold_sql": "SELECT COUNT(*) FROM (SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\" INTERSECT SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"Dutch\")"
+  },
+  {
+   "id": 746,
+   "difficulty": "extra",
+   "question": "What are the names of nations speak both English and French?",
+   "gold_sql": "SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\" INTERSECT SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"French\""
+  },
+  {
+   "id": 752,
+   "difficulty": "hard",
+   "question": "What are the regions that use English or Dutch?",
+   "gold_sql": "SELECT DISTINCT T1.Region FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\" OR T2.Language  =  \"Dutch\""
+  },
+  {
+   "id": 754,
+   "difficulty": "extra",
+   "question": "What are the countries where either English or Dutch is the official language ?",
+   "gold_sql": "select t1.name from country as t1 join countrylanguage as t2 on t1.code  =  t2.countrycode where t2.language  =  \"english\" and isofficial  =  \"t\" union select t1.name from country as t1 join countrylanguage as t2 on t1.code  =  t2.countrycode where t2.language  =  \"dutch\" and isofficial  =  \"t\""
+  },
+  {
+   "id": 755,
+   "difficulty": "extra",
+   "question": "Which countries have either English or Dutch as an official language?",
+   "gold_sql": "SELECT * FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\" AND IsOfficial  =  \"T\" UNION SELECT * FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"Dutch\" AND IsOfficial  =  \"T\""
+  },
+  {
+   "id": 757,
+   "difficulty": "extra",
+   "question": "What is the language that is used by the largest number of Asian nations?",
+   "gold_sql": "SELECT T2.Language FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T1.Continent  =  \"Asia\" GROUP BY T2.Language ORDER BY COUNT (*) DESC LIMIT 1"
+  },
+  {
+   "id": 758,
+   "difficulty": "hard",
+   "question": "Which languages are spoken by only one country in republic governments?",
+   "gold_sql": "SELECT T2.Language FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T1.GovernmentForm  =  \"Republic\" GROUP BY T2.Language HAVING COUNT(*)  =  1"
+  },
+  {
+   "id": 762,
+   "difficulty": "hard",
+   "question": "Find the name, population and expected life length of asian country with the largest area?",
+   "gold_sql": "SELECT Name ,  Population ,  LifeExpectancy FROM country WHERE Continent  =  \"Asia\" ORDER BY SurfaceArea DESC LIMIT 1"
+  },
+  {
+   "id": 764,
+   "difficulty": "extra",
+   "question": "What is average life expectancy in the countries where English is not the official language?",
+   "gold_sql": "SELECT avg(LifeExpectancy) FROM country WHERE Name NOT IN (SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\" AND T2.IsOfficial  =  \"T\")"
+  },
+  {
+   "id": 765,
+   "difficulty": "extra",
+   "question": "Give the mean life expectancy of countries in which English is not the official language.",
+   "gold_sql": "SELECT avg(LifeExpectancy) FROM country WHERE Name NOT IN (SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\" AND T2.IsOfficial  =  \"T\")"
+  },
+  {
+   "id": 769,
+   "difficulty": "medium",
+   "question": "What is the official language used in the country the name of whose head of state is Beatrix.",
+   "gold_sql": "SELECT T2.Language FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T1.HeadOfState  =  \"Beatrix\" AND T2.IsOfficial  =  \"T\""
+  },
+  {
+   "id": 774,
+   "difficulty": "extra",
+   "question": "What are the African countries that have a  population less than any country in Asia?",
+   "gold_sql": "SELECT Name FROM country WHERE Continent  =  \"Africa\"  AND population  <  (SELECT max(population) FROM country WHERE Continent  =  \"Asia\")"
+  },
+  {
+   "id": 775,
+   "difficulty": "extra",
+   "question": "Which African countries have a smaller population than that of any country in Asia?",
+   "gold_sql": "SELECT Name FROM country WHERE Continent  =  \"Africa\"  AND population  <  (SELECT min(population) FROM country WHERE Continent  =  \"Asia\")"
+  },
+  {
+   "id": 781,
+   "difficulty": "easy",
+   "question": "Give the country codes for countries in which people speak langauges that are not English.",
+   "gold_sql": "SELECT DISTINCT CountryCode FROM countrylanguage WHERE LANGUAGE != \"English\""
+  },
+  {
+   "id": 782,
+   "difficulty": "hard",
+   "question": "What are the codes of the countries that do not speak English and whose government forms are not Republic?",
+   "gold_sql": "SELECT Code FROM country WHERE GovernmentForm != \"Republic\" EXCEPT SELECT CountryCode FROM countrylanguage WHERE LANGUAGE  =  \"English\""
+  },
+  {
+   "id": 785,
+   "difficulty": "extra",
+   "question": "What are the names of cities in Europe for which English is not the official language?",
+   "gold_sql": "SELECT DISTINCT T2.Name FROM country AS T1 JOIN city AS T2 ON T2.CountryCode  =  T1.Code WHERE T1.Continent  =  'Europe' AND T1.Name NOT IN (SELECT T3.Name FROM country AS T3 JOIN countrylanguage AS T4 ON T3.Code  =  T4.CountryCode WHERE T4.IsOfficial  =  'T' AND T4.Language  =  'English')"
+  },
+  {
+   "id": 786,
+   "difficulty": "hard",
+   "question": "Which unique cities are in Asian countries where Chinese is the official language ?",
+   "gold_sql": "select distinct t3.name from country as t1 join countrylanguage as t2 on t1.code  =  t2.countrycode join city as t3 on t1.code  =  t3.countrycode where t2.isofficial  =  't' and t2.language  =  'chinese' and t1.continent  =  \"asia\""
+  },
+  {
+   "id": 787,
+   "difficulty": "hard",
+   "question": "Return the different names of cities that are in Asia and for which Chinese is the official language.",
+   "gold_sql": "SELECT DISTINCT T3.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode JOIN city AS T3 ON T1.Code  =  T3.CountryCode WHERE T2.IsOfficial  =  'T' AND T2.Language  =  'Chinese' AND T1.Continent  =  \"Asia\""
+  },
+  {
+   "id": 789,
+   "difficulty": "medium",
+   "question": "Give the name, year of independence, and surface area of the country that has the lowest population.",
+   "gold_sql": "SELECT Name ,  SurfaceArea ,  IndepYear FROM country ORDER BY Population LIMIT 1"
+  },
+  {
+   "id": 791,
+   "difficulty": "medium",
+   "question": "Give the name, population, and head of state for the country that has the largest area.",
+   "gold_sql": "SELECT Name ,  population ,  HeadOfState FROM country ORDER BY SurfaceArea DESC LIMIT 1"
+  },
+  {
+   "id": 792,
+   "difficulty": "medium",
+   "question": "Return the country name and the numbers of languages spoken for each country that speaks at least 3 languages.",
+   "gold_sql": "SELECT COUNT(T2.Language) ,  T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode GROUP BY T1.Name HAVING COUNT(*)  >  2"
+  },
+  {
+   "id": 797,
+   "difficulty": "medium",
+   "question": "What are the different government forms and what is the total population of each for government forms that have an average life expectancy greater than 72?",
+   "gold_sql": "SELECT sum(Population) ,  GovernmentForm FROM country GROUP BY GovernmentForm HAVING avg(LifeExpectancy)  >  72"
+  },
+  {
+   "id": 799,
+   "difficulty": "medium",
+   "question": "What are the different continents and the total popuation and average life expectancy corresponding to each, for continents that have an average life expectancy less than 72?",
+   "gold_sql": "SELECT sum(Population) ,  avg(LifeExpectancy) ,  Continent FROM country GROUP BY Continent HAVING avg(LifeExpectancy)  <  72"
+  },
+  {
+   "id": 801,
+   "difficulty": "medium",
+   "question": "Return the names and surface areas of the 5 largest countries.",
+   "gold_sql": "SELECT Name ,  SurfaceArea FROM country ORDER BY SurfaceArea DESC LIMIT 5"
+  },
+  {
+   "id": 804,
+   "difficulty": "medium",
+   "question": "What are the names of the nations with the 3 lowest populations?",
+   "gold_sql": "SELECT Name FROM country ORDER BY Population ASC LIMIT 3"
+  },
+  {
+   "id": 805,
+   "difficulty": "medium",
+   "question": "Return the names of the 3 countries with the fewest people.",
+   "gold_sql": "SELECT Name FROM country ORDER BY Population ASC LIMIT 3"
+  },
+  {
+   "id": 809,
+   "difficulty": "medium",
+   "question": "Give the names of countries that are in Europe and have a population equal to 80000.",
+   "gold_sql": "SELECT Name FROM country WHERE continent  =  \"Europe\" AND Population  =  \"80000\""
+  },
+  {
+   "id": 814,
+   "difficulty": "hard",
+   "question": "Which language is spoken by the largest number of countries?",
+   "gold_sql": "SELECT LANGUAGE FROM countrylanguage GROUP BY LANGUAGE ORDER BY count(*) DESC LIMIT 1"
+  }
+ ]
+}

@@ -1,0 +1,44 @@
+{
+ "db_id": "voter_1",
+ "db_url": "sqlite:///data/spider/spider_data/database/voter_1/voter_1.sqlite",
+ "note": "Spider 1.0 dev, stratified sample by official hardness: 300 of 1034 proportional within each level, random.Random(2026). id is the question's index in dev.json. Built by experiments/build_spider_eval.py.",
+ "strict_phrasing": true,
+ "questions": [
+  {
+   "id": 689,
+   "difficulty": "medium",
+   "question": "List the vote ids, phone numbers and states of all votes.",
+   "gold_sql": "SELECT vote_id ,  phone_number ,  state FROM votes"
+  },
+  {
+   "id": 690,
+   "difficulty": "medium",
+   "question": "What are the maximum and minimum values of area codes?",
+   "gold_sql": "SELECT max(area_code) ,  min(area_code) FROM area_code_state"
+  },
+  {
+   "id": 692,
+   "difficulty": "easy",
+   "question": "What are the names of the contestants whose names are not 'Jessie Alloway'",
+   "gold_sql": "SELECT contestant_name FROM contestants WHERE contestant_name != 'Jessie Alloway'"
+  },
+  {
+   "id": 693,
+   "difficulty": "medium",
+   "question": "What are the distinct states and create time of all votes?",
+   "gold_sql": "SELECT DISTINCT state ,  created FROM votes"
+  },
+  {
+   "id": 695,
+   "difficulty": "extra",
+   "question": "Of all the contestants who got voted, what is the contestant number and name of the contestant who got least votes?",
+   "gold_sql": "SELECT T1.contestant_number , T1.contestant_name FROM contestants AS T1 JOIN votes AS T2 ON T1.contestant_number  =  T2.contestant_number GROUP BY T1.contestant_number ORDER BY count(*) ASC LIMIT 1"
+  },
+  {
+   "id": 697,
+   "difficulty": "extra",
+   "question": "How many contestants did not get voted?",
+   "gold_sql": "SELECT count(*) FROM contestants WHERE contestant_number NOT IN ( SELECT contestant_number FROM votes )"
+  }
+ ]
+}

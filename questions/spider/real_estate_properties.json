@@ -1,0 +1,14 @@
+{
+ "db_id": "real_estate_properties",
+ "db_url": "sqlite:///data/spider/spider_data/database/real_estate_properties/real_estate_properties.sqlite",
+ "note": "Spider 1.0 dev, stratified sample by official hardness: 300 of 1034 proportional within each level, random.Random(2026). id is the question's index in dev.json. Built by experiments/build_spider_eval.py.",
+ "strict_phrasing": true,
+ "questions": [
+  {
+   "id": 1033,
+   "difficulty": "hard",
+   "question": "What are the names of properties that are either houses or apartments with more than 1 room?",
+   "gold_sql": "SELECT property_name FROM Properties WHERE property_type_code  =  \"House\" UNION SELECT property_name FROM Properties WHERE property_type_code  =  \"Apartment\" AND room_count  >  1"
+  }
+ ]
+}

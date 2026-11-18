@@ -1,0 +1,74 @@
+{
+ "db_id": "poker_player",
+ "db_url": "sqlite:///data/spider/spider_data/database/poker_player/poker_player.sqlite",
+ "note": "Spider 1.0 dev, stratified sample by official hardness: 300 of 1034 proportional within each level, random.Random(2026). id is the question's index in dev.json. Built by experiments/build_spider_eval.py.",
+ "strict_phrasing": true,
+ "questions": [
+  {
+   "id": 648,
+   "difficulty": "easy",
+   "question": "Count the number of poker players.",
+   "gold_sql": "SELECT count(*) FROM poker_player"
+  },
+  {
+   "id": 650,
+   "difficulty": "easy",
+   "question": "What are the earnings of poker players, ordered descending by value?",
+   "gold_sql": "SELECT Earnings FROM poker_player ORDER BY Earnings DESC"
+  },
+  {
+   "id": 651,
+   "difficulty": "medium",
+   "question": "List the final tables made and the best finishes of poker players.",
+   "gold_sql": "SELECT Final_Table_Made ,  Best_Finish FROM poker_player"
+  },
+  {
+   "id": 656,
+   "difficulty": "medium",
+   "question": "Return the money rank of the player with the greatest earnings.",
+   "gold_sql": "SELECT Money_Rank FROM poker_player ORDER BY Earnings DESC LIMIT 1"
+  },
+  {
+   "id": 662,
+   "difficulty": "medium",
+   "question": "Give the names of poker players who have earnings above 300000.",
+   "gold_sql": "SELECT T1.Name FROM people AS T1 JOIN poker_player AS T2 ON T1.People_ID  =  T2.People_ID WHERE T2.Earnings  >  300000"
+  },
+  {
+   "id": 663,
+   "difficulty": "medium",
+   "question": "List the names of poker players ordered by the final tables made in ascending order.",
+   "gold_sql": "SELECT T1.Name FROM people AS T1 JOIN poker_player AS T2 ON T1.People_ID  =  T2.People_ID ORDER BY T2.Final_Table_Made"
+  },
+  {
+   "id": 669,
+   "difficulty": "medium",
+   "question": "What is the average earnings of poker players with height higher than 200?",
+   "gold_sql": "SELECT avg(T2.Earnings) FROM people AS T1 JOIN poker_player AS T2 ON T1.People_ID  =  T2.People_ID WHERE T1.Height  >  200"
+  },
+  {
+   "id": 675,
+   "difficulty": "hard",
+   "question": "What is the most common nationality of people?",
+   "gold_sql": "SELECT Nationality FROM people GROUP BY Nationality ORDER BY COUNT(*) DESC LIMIT 1"
+  },
+  {
+   "id": 678,
+   "difficulty": "easy",
+   "question": "Return the nationalities for which there are two or more people.",
+   "gold_sql": "SELECT Nationality FROM people GROUP BY Nationality HAVING COUNT(*)  >=  2"
+  },
+  {
+   "id": 679,
+   "difficulty": "medium",
+   "question": "List the names and birth dates of people in ascending alphabetical order of name.",
+   "gold_sql": "SELECT Name ,  Birth_Date FROM people ORDER BY Name ASC"
+  },
+  {
+   "id": 682,
+   "difficulty": "easy",
+   "question": "What are the names of people who are not from Russia?",
+   "gold_sql": "SELECT Name FROM people WHERE Nationality != \"Russia\""
+  }
+ ]
+}

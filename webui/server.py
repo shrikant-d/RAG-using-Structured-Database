@@ -50,6 +50,11 @@ os.environ.setdefault("TUI_REASONING_EFFORT", "none")
 
 def _databases() -> dict[str, str]:
     dbs = {"chinook": ROOT / "data" / "chinook.sqlite", "tpch_sf001": ROOT / "data" / "tpch_sf001.sqlite"}
+    # Spider is not redistributed here; listed only if downloaded (README, "Spider databases")
+    spider = ROOT / "data" / "spider" / "spider_data" / "database"
+    if spider.is_dir():
+        for f in sorted(spider.glob("*/*.sqlite")):
+            dbs[f"spider/{f.parent.name}"] = f
     # read-only at the driver: a second guard behind core.answer's SELECT-only check
     return {k: f"sqlite:///file:{v.as_posix()}?mode=ro&uri=true" for k, v in dbs.items() if v.exists()}
 

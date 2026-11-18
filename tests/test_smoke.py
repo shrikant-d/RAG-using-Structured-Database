@@ -14,7 +14,7 @@ client = TestClient(app, base_url="http://127.0.0.1")
 
 
 def test_databases_present():
-    assert set(DATABASES) == {"chinook", "tpch_sf001"}
+    assert {"chinook", "tpch_sf001"} <= set(DATABASES)
     rows, err = execute_sql(_engine("chinook"), "SELECT COUNT(*) AS n FROM Artist")
     assert err is None and rows[0]["n"] == 275
     rows, err = execute_sql(_engine("tpch_sf001"), "SELECT COUNT(*) AS n FROM region")

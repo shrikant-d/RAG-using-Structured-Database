@@ -13,6 +13,9 @@ venv/
 # node (frontend/dist IS committed so no Node is needed to run)
 webui/frontend/node_modules/
 
+# Spider (CC BY-SA 4.0): downloaded by the user, not redistributed
+data/spider/
+
 # vector index built at runtime by Path A
 .chroma/
 

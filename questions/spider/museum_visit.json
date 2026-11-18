@@ -1,0 +1,44 @@
+{
+ "db_id": "museum_visit",
+ "db_url": "sqlite:///data/spider/spider_data/database/museum_visit/museum_visit.sqlite",
+ "note": "Spider 1.0 dev, stratified sample by official hardness: 300 of 1034 proportional within each level, random.Random(2026). id is the question's index in dev.json. Built by experiments/build_spider_eval.py.",
+ "strict_phrasing": true,
+ "questions": [
+  {
+   "id": 411,
+   "difficulty": "easy",
+   "question": "How many visitors below age 30 are there?",
+   "gold_sql": "SELECT count(*) FROM visitor WHERE age  <  30"
+  },
+  {
+   "id": 415,
+   "difficulty": "medium",
+   "question": "Find the id and name of the museum that has the most staff members?",
+   "gold_sql": "SELECT museum_id ,  name FROM museum ORDER BY num_of_staff DESC LIMIT 1"
+  },
+  {
+   "id": 416,
+   "difficulty": "easy",
+   "question": "Find the average number of staff working for the museums that were open before 2009.",
+   "gold_sql": "SELECT avg(num_of_staff) FROM museum WHERE open_year  <  2009"
+  },
+  {
+   "id": 419,
+   "difficulty": "medium",
+   "question": "find the id, name and age for visitors who visited some museums more than once.",
+   "gold_sql": "SELECT t1.id ,  t1.name ,  t1.age FROM visitor AS t1 JOIN visit AS t2 ON t1.id  =  t2.visitor_id GROUP BY t1.id HAVING count(*)  >  1"
+  },
+  {
+   "id": 421,
+   "difficulty": "extra",
+   "question": "What are the id and name of the museum visited most times?",
+   "gold_sql": "SELECT t2.Museum_ID ,  t1.name FROM museum AS t1 JOIN visit AS t2 ON t1.Museum_ID  =  t2.Museum_ID GROUP BY t2.Museum_ID ORDER BY count(*) DESC LIMIT 1"
+  },
+  {
+   "id": 427,
+   "difficulty": "extra",
+   "question": "Find the number of visitors who did not visit any museum opened after 2010.",
+   "gold_sql": "SELECT count(*) FROM visitor WHERE id NOT IN (SELECT t2.visitor_id FROM museum AS t1 JOIN visit AS t2 ON t1.Museum_ID  =  t2.Museum_ID WHERE t1.open_year  >  2010)"
+  }
+ ]
+}

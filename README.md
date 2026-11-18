@@ -107,7 +107,61 @@ and `Alt+T` toggles light/dark.
 
 The full question sets used in the thesis, with gold SQL, are in
 [`questions/chinook.json`](questions/chinook.json) (25 questions) and
-[`questions/tpch.json`](questions/tpch.json) (the 22 TPC-H queries).
+[`questions/tpch.json`](questions/tpch.json) (the 22 TPC-H queries), and
+[`questions/spider/`](questions/spider/) (299 Spider dev questions over 20 databases; see below).
+
+---
+
+## Optional: add the Spider databases
+
+The thesis also uses 20 databases from the **Spider 1.0** benchmark (Yu et al., 2018).
+Spider is licensed CC BY-SA 4.0 and is **not included** in this repository. Download it yourself:
+
+1. Open the Spider page, https://yale-lily.github.io/spider, and click **Spider Dataset** under
+   *Getting Started*. The link goes to Google Drive:
+   https://drive.google.com/file/d/1403EGqzIDoHMdQF4c9Bkyl7dZLZ5Wt6J/view
+   It downloads `spider_data.zip`, which is about 200 MB.
+2. Create the folder `data/spider/` in this repository.
+3. Unzip `spider_data.zip` into it. The result must look like this:
+
+   ```
+   data/spider/spider_data/
+   ├── database/
+   │   ├── concert_singer/concert_singer.sqlite
+   │   ├── world_1/world_1.sqlite
+   │   └── ...           (166 database folders)
+   ├── dev.json
+   ├── tables.json
+   └── ...
+   ```
+
+   Windows (PowerShell), from the repository root:
+
+   ```powershell
+   Expand-Archive "$HOME\Downloads\spider_data.zip" -DestinationPath data\spider
+   ```
+
+   macOS / Linux:
+
+   ```bash
+   mkdir -p data/spider && unzip ~/Downloads/spider_data.zip -d data/spider
+   ```
+
+   If you have a `__MACOSX/` folder next to `spider_data/`, you can delete it.
+4. Restart `python -m webui.server`. The **Database** list now shows `spider/<name>` entries
+   for all 166 databases.
+
+The server finds the files only at `data/spider/spider_data/database/<name>/<name>.sqlite`.
+If no `spider/` entries appear, check that the path has exactly this shape, without an extra
+folder level. `data/spider/` is gitignored, so the download is never committed.
+
+The thesis evaluates these 20 databases:
+`battle_death`, `car_1`, `concert_singer`, `course_teach`, `cre_Doc_Template_Mgt`,
+`dog_kennels`, `employee_hire_evaluation`, `flight_2`, `museum_visit`, `network_1`,
+`orchestra`, `pets_1`, `poker_player`, `real_estate_properties`, `singer`,
+`student_transcripts_tracking`, `tvshow`, `voter_1`, `world_1`, `wta_1`.
+Their questions and gold SQL are in `questions/spider/<name>.json`, one file per database.
+The thesis ran Spider with Gemma only.
 
 ---
 
@@ -141,9 +195,9 @@ core/          SQL generation, execution with the read-only guard, repair loop,
                answer generation, grounding check, LLM client (core/llm.py)
 paths/         the five schema-retrieval configurations (registry.py builds them)
 db/            database helpers; build_tpch.py regenerates the TPC-H database
-data/          chinook.sqlite, tpch_sf001.sqlite
+data/          chinook.sqlite, tpch_sf001.sqlite (+ spider/ after you download it)
 webui/         server.py (FastAPI) and frontend/ (React + Vite; dist/ is the built page)
-questions/     thesis question sets with gold SQL
+questions/     thesis question sets with gold SQL (Chinook, TPC-H, Spider sample)
 tests/         offline smoke tests
 ```
 
@@ -176,6 +230,11 @@ graph from those foreign keys.
 - **TPC-H**: the schema and data generator are from the
   [TPC-H benchmark](https://www.tpc.org/tpch/). The data was generated at SF 0.01 with DuckDB's
   `tpch` extension. Results from this repository are not TPC-H benchmark results.
+- **Spider 1.0**: Yu et al., *Spider: A Large-Scale Human-Labeled Dataset for Complex and
+  Cross-Domain Semantic Parsing and Text-to-SQL Task*, EMNLP 2018,
+  [yale-lily.github.io/spider](https://yale-lily.github.io/spider) (CC BY-SA 4.0). The databases
+  are not redistributed here. `questions/spider/` holds a sample of its dev-set questions and gold
+  SQL, under the same licence.
 
 ## Security
 

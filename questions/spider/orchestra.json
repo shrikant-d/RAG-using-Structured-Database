@@ -1,0 +1,80 @@
+{
+ "db_id": "orchestra",
+ "db_url": "sqlite:///data/spider/spider_data/database/orchestra/orchestra.sqlite",
+ "note": "Spider 1.0 dev, stratified sample by official hardness: 300 of 1034 proportional within each level, random.Random(2026). id is the question's index in dev.json. Built by experiments/build_spider_eval.py.",
+ "strict_phrasing": true,
+ "questions": [
+  {
+   "id": 825,
+   "difficulty": "easy",
+   "question": "What are the names of conductors, ordered by age?",
+   "gold_sql": "SELECT Name FROM conductor ORDER BY Age ASC"
+  },
+  {
+   "id": 826,
+   "difficulty": "easy",
+   "question": "What are the names of conductors whose nationalities are not \"USA\"?",
+   "gold_sql": "SELECT Name FROM conductor WHERE Nationality != 'USA'"
+  },
+  {
+   "id": 834,
+   "difficulty": "easy",
+   "question": "How many different nationalities do conductors have?",
+   "gold_sql": "SELECT count(DISTINCT Nationality) FROM conductor"
+  },
+  {
+   "id": 838,
+   "difficulty": "medium",
+   "question": "List the name of the conductor with the most years of work.",
+   "gold_sql": "SELECT Name FROM conductor ORDER BY Year_of_Work DESC LIMIT 1"
+  },
+  {
+   "id": 840,
+   "difficulty": "medium",
+   "question": "Show the names of conductors and the orchestras they have conducted.",
+   "gold_sql": "SELECT T1.Name ,  T2.Orchestra FROM conductor AS T1 JOIN orchestra AS T2 ON T1.Conductor_ID  =  T2.Conductor_ID"
+  },
+  {
+   "id": 842,
+   "difficulty": "medium",
+   "question": "Show the names of conductors that have conducted more than one orchestras.",
+   "gold_sql": "SELECT T1.Name FROM conductor AS T1 JOIN orchestra AS T2 ON T1.Conductor_ID  =  T2.Conductor_ID GROUP BY T2.Conductor_ID HAVING COUNT(*)  >  1"
+  },
+  {
+   "id": 843,
+   "difficulty": "medium",
+   "question": "What are the names of conductors who have conducted at more than one orchestra?",
+   "gold_sql": "SELECT T1.Name FROM conductor AS T1 JOIN orchestra AS T2 ON T1.Conductor_ID  =  T2.Conductor_ID GROUP BY T2.Conductor_ID HAVING COUNT(*)  >  1"
+  },
+  {
+   "id": 844,
+   "difficulty": "extra",
+   "question": "Show the name of the conductor that has conducted the most number of orchestras.",
+   "gold_sql": "SELECT T1.Name FROM conductor AS T1 JOIN orchestra AS T2 ON T1.Conductor_ID  =  T2.Conductor_ID GROUP BY T2.Conductor_ID ORDER BY COUNT(*) DESC LIMIT 1"
+  },
+  {
+   "id": 846,
+   "difficulty": "medium",
+   "question": "Please show the name of the conductor that has conducted orchestras founded after 2008.",
+   "gold_sql": "SELECT T1.Name FROM conductor AS T1 JOIN orchestra AS T2 ON T1.Conductor_ID  =  T2.Conductor_ID WHERE Year_of_Founded  >  2008"
+  },
+  {
+   "id": 848,
+   "difficulty": "medium",
+   "question": "Please show the different record companies and the corresponding number of orchestras.",
+   "gold_sql": "SELECT Record_Company ,  COUNT(*) FROM orchestra GROUP BY Record_Company"
+  },
+  {
+   "id": 859,
+   "difficulty": "medium",
+   "question": "Count the number of orchestras that have CD or DVD as their record format.",
+   "gold_sql": "SELECT COUNT(*) FROM orchestra WHERE Major_Record_Format  =  \"CD\" OR Major_Record_Format  =  \"DVD\""
+  },
+  {
+   "id": 861,
+   "difficulty": "medium",
+   "question": "What are years of founding for orchestras that have had more than a single performance?",
+   "gold_sql": "SELECT Year_of_Founded FROM orchestra AS T1 JOIN performance AS T2 ON T1.Orchestra_ID  =  T2.Orchestra_ID GROUP BY T2.Orchestra_ID HAVING COUNT(*)  >  1"
+  }
+ ]
+}

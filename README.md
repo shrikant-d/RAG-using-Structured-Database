@@ -6,9 +6,29 @@ rows, with a check that every value in the answer appears in those rows.
 
 This repository is the runnable companion to the master's thesis *Extending RAG with Structured
 Databases* (TU Ilmenau). It contains the web interface, its local HTTP API, the full retrieval
-and generation pipeline, and the two databases used in the thesis: **Chinook** and **TPC-H**
-(scale factor 0.01). The model is **Gemma 4 31B on the TU Ilmenau DBIS server, with reasoning
-switched off**.
+and generation pipeline, the databases of the thesis, and all 346 thesis questions with gold
+SQL. The model is **Gemma 4 31B on the TU Ilmenau DBIS server, with reasoning switched off**.
+
+| Benchmark | Databases | Questions | In this repo? |
+|---|---|---|---|
+| **Chinook** (music store) | 1 database, 11 tables | 25 | Yes: `data/chinook.sqlite` |
+| **TPC-H**, scale factor 0.01 | 1 database, 8 tables | 22 (the TPC-H queries) | Yes: `data/tpch_sf001.sqlite` |
+| **Spider 1.0**, dev sample | 20 databases (of 166) | 299 | Questions yes. Databases: download them yourself ([how](#optional-add-the-spider-databases)) |
+
+The thesis ran Chinook and TPC-H with every model and Spider with Gemma only. This repository
+uses Gemma for all three.
+
+**Contents:**
+[Configurations](#the-five-configurations) ·
+[Quick start](#quick-start) ·
+[Questions](#all-thesis-questions) ·
+[Spider](#optional-add-the-spider-databases) ·
+[Offline check](#check-the-installation-without-the-llm) ·
+[Reproducing](#notes-on-reproducing-thesis-numbers) ·
+[Layout](#repository-layout) ·
+[Data sources](#data-sources) ·
+[Security](#security) ·
+[Licence](#licence)
 
 ![Chinook question answered by configuration D](docs/screenshot.png)
 
@@ -32,6 +52,9 @@ All five then share the same steps: up to two SQL repair attempts, the answer ge
 
 You need **Python 3.11 or newer** (tested on 3.13), **Git**, and an **API key for the TU Ilmenau
 DBIS LLM server**. You do not need Node.js, because the built web page is included.
+Chinook and TPC-H work right away. For Spider, also follow
+[Optional: add the Spider databases](#optional-add-the-spider-databases), either before or after
+these steps.
 
 ### 1. Get the code
 
@@ -83,7 +106,8 @@ python -m webui.server
 
 Go to **http://127.0.0.1:8600**.
 
-1. Pick a **Configuration**, keep **Gemma 4 31B** as the model, and pick a **Database**.
+1. Pick a **Configuration**, keep **Gemma 4 31B** as the model, and pick a **Database**:
+   `chinook`, `tpch_sf001`, or one of the `spider/<name>` entries once Spider is downloaded.
 2. Type a question and press **Enter**.
 3. Open the panels under the answer to check it:
    - **SQL**: the executed query, plus the original query if a repair changed it.
@@ -104,6 +128,9 @@ and `Alt+T` toggles light/dark.
 | chinook | Which media type is used by the most tracks that appear on the Music playlist? |
 | tpch_sf001 | How many customers are there in each market segment? |
 | tpch_sf001 | Which nation has the most suppliers? |
+| spider/concert_singer | How many singers do we have? |
+| spider/world_1 | Which continent is Anguilla in? |
+| spider/car_1 | Which of the countries has the most car makers? List the country name. |
 
 ### All thesis questions
 
@@ -203,7 +230,7 @@ The thesis ran Spider with Gemma only.
 ## Check the installation without the LLM
 
 These checks need neither the API key nor the network. They cover:
-- both databases load;
+- Chinook and TPC-H load; Spider is not needed;
 - write statements are refused;
 - the database files are opened read-only;
 - the API's input checks work.
@@ -220,6 +247,8 @@ python -m pytest tests
   match the thesis' reasoning-off runs. Latency depends on the load on the shared server.
 - **The first question under configuration A takes longer.** ChromaDB downloads its embedding
   model (about 80 MB) once and builds a local index in `.chroma/`.
+- **Spider.** The thesis' Spider numbers come from the 20 databases listed above with Gemma. The
+  interface also offers the other 146 Spider databases, which the thesis did not evaluate.
 - **Each question runs alone.** The server answers one question at a time, so a second tab
   waits for the first.
 
@@ -277,7 +306,7 @@ graph from those foreign keys.
   `127.0.0.1` or `localhost`. This guards against DNS rebinding.
 - Generated SQL passes two independent guards:
   - a SELECT-only check that rejects multiple statements and data-modifying CTEs;
-  - SQLite connections opened in read-only mode.
+  - SQLite connections opened in read-only mode, for Chinook, TPC-H and every Spider database.
 - The API key is read from `.env` on the server side. It never appears in a response, and
   `.env` is gitignored.
 - Questions are limited to 2,000 characters, and the API documentation routes are disabled.
@@ -290,4 +319,5 @@ Do not expose this server to a network: it is a local, single-user research tool
 
 ## Licence
 
-Code: [MIT](LICENSE). The databases in `data/` keep the terms of their sources (see *Data sources*).
+Code: [MIT](LICENSE). Chinook, TPC-H and the Spider questions in `questions/spider/` keep the terms
+of their sources (see [Data sources](#data-sources)). The Spider databases are not redistributed.

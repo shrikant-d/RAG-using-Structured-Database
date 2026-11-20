@@ -30,7 +30,7 @@ uses Gemma for all three.
 [Security](#security) ·
 [Licence](#licence)
 
-![Chinook question answered by configuration D](docs/screenshot.png)
+![Two Chinook questions answered by configuration B, with the evidence tabs under each answer](docs/screenshot.png)
 
 ## The five configurations
 
@@ -106,13 +106,15 @@ python -m webui.server
 
 Go to **http://127.0.0.1:8600**.
 
-1. Pick a **Configuration**, keep **Gemma 4 31B** as the model, and pick a **Database**:
-   `chinook`, `tpch_sf001`, or one of the `spider/<name>` entries once Spider is downloaded.
+1. In the sidebar, pick a **Schema retrieval** configuration (each one says what it puts in
+   front of the model) and a **Database**: `chinook`, `tpch_sf001`, or one of the Spider
+   databases once Spider is downloaded. The model is fixed to Gemma 4 31B. On a narrow window
+   the sidebar opens from the button at the top left.
 2. Type a question and press **Enter**.
-3. Open the panels under the answer to check it:
-   - **SQL**: the executed query, plus the original query if a repair changed it.
+3. Each answer says whether it is grounded in the result. The tabs under it hold the evidence:
    - **Result**: the rows, sortable by column.
-   - **Schema used**: the tables the configuration put in front of the model.
+   - **SQL**: the executed query, plus the original query if a repair changed it.
+   - **Schema**: the tables the configuration put in front of the model.
    - **Agent steps** (C and D only): every tool call with its input and output.
    - **Metrics**: latency, tool calls, repairs, tokens.
 
@@ -163,7 +165,7 @@ Each JSON file has this shape (gold SQL shortened):
 }
 ```
 
-To check an answer by hand, open the **SQL** and **Result** panels in the UI and run the
+To check an answer by hand, open the **SQL** and **Result** tabs under the answer and run the
 `gold_sql` against the same database. Any SQLite client works, for example
 `sqlite3 data/chinook.sqlite`. Matching *result sets*, not matching SQL text, is the thesis'
 correctness criterion.

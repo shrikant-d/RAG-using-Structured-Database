@@ -21,3 +21,6 @@ data/spider/
 
 .DS_Store
 Thumbs.db
+
+# local design skills (third-party, not part of the project)
+.claude/
